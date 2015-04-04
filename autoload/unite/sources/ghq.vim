@@ -36,8 +36,11 @@ endfunction
 
 function! s:unite_source.gather_candidates(args, context)
   let l:root_pat = s:ghq_root_prefix_pattern()
+  let l:ghq_root = substitute(unite#util#system('git config ghq.root'), "\<NL>", '', '')
+    " \   split(unite#util#system(s:ghq_command . ' list --full-path'), "\n"),
+  " リポジトリの更新時間でソートする
   return map(
-    \   split(unite#util#system(s:ghq_command . ' list --full-path'), "\n"),
+    \   split(system('find ' . l:ghq_root ." -type d -mindepth 3 -maxdepth 3 | xargs -I{} sh -c 'cd {} && git log --pretty=format:\"%ad \" --date=short -n 1 && pwd' | sort -r | awk '{print $2}'"), "\n"),
     \   '{
     \     "word": substitute(v:val, l:root_pat, "", ""),
     \     "action__directory": fnamemodify(v:val, ":p:h"),
