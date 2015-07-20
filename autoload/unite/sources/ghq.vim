@@ -40,7 +40,7 @@ function! s:unite_source.gather_candidates(args, context)
     " \   split(unite#util#system(s:ghq_command . ' list --full-path'), "\n"),
   " リポジトリの更新時間でソートする
   return map(
-    \   split(system('find ' . l:ghq_root ." -type d -mindepth 3 -maxdepth 3 | xargs -I{} sh -c 'cd {} && git log --pretty=format:\"%ad \" --date=short -n 1 2>/dev/null && pwd' | sort -r | awk '{print $2}'"), "\n"),
+    \   split(system("ghq list --full-path | xargs -I{} sh -c 'cd {} && git log --pretty=format:\"%ad \" --date=short -n 1 2>/dev/null && pwd' | sort -r | awk '{print $2}'"), "\n"),
     \   '{
     \     "word": substitute(v:val, l:root_pat, "", ""),
     \     "action__directory": fnamemodify(v:val, ":p:h"),
