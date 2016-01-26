@@ -38,7 +38,7 @@ function! s:unite_source.gather_candidates(args, context)
   let l:root_pat = s:ghq_root_prefix_pattern()
   " リポジトリの.gitの更新時間でソートする
   return map(
-    \   split(system("ghq list --full-path | xargs -I{} ls -dl --time-style=+%s {}/.git | sort -nr -k6 | cut -d' ' -f7 | sed 's/\\/.git//'"), "\n"),
+    \   split(system('ghq list --full-path | xargs -I{} ls -dl --time-style=+%s {}/.git | sed ''s/.*\([0-9]\{10\}\)/\1/'' | sort -nr | cut -d'' '' -f2 | sed ''s/\/.git//'''), "\n"),
     \   '{
     \     "word": substitute(v:val, l:root_pat, "", ""),
     \     "action__directory": fnamemodify(v:val, ":p:h"),
