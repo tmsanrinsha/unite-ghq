@@ -14,6 +14,8 @@ else
   let s:ghq_command = "ghq"
 endif
 
+let s:ghq_list_command =  expand('<sfile>:p:h:h:h:h') . '/bin/ghq-list.sh'
+
 function! s:ghq_roots()
   return map(
         \ split(unite#util#system('git config --path --get-all ghq.root'), "\n"),
@@ -38,7 +40,7 @@ function! s:unite_source.gather_candidates(args, context)
   let l:root_pat = s:ghq_root_prefix_pattern()
   " リポジトリの.gitの更新時間でソートする
   return map(
-    \   split(system('ghq list --full-path | xargs -I{} ls -dl --time-style=+%s {}/.git | sed ''s/.*\([0-9]\{10\}\)/\1/'' | sort -nr | cut -d'' '' -f2 | sed ''s/\/.git//'''), "\n"),
+    \   split(system(s:ghq_list_command), "\n"),
     \   '{
     \     "word": substitute(v:val, l:root_pat, "", ""),
     \     "action__directory": fnamemodify(v:val, ":p:h"),
