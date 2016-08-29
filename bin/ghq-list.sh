@@ -13,7 +13,6 @@ ghq_roots="$(git config --path --get-all ghq.root)"
 
 for dir in $(ghq list --full-path)
 do
-    # echo $dir
     if [ -d "$dir/.git" ]; then
         stdout="$stdout\n$(ls -dl --time-style=+%s "$dir/.git" | sed 's/.*\([0-9]\{10\}\)/\1/' | sed 's/\/.git//')"
     else
@@ -21,7 +20,6 @@ do
     fi
 done
 
-# echo -e "$stdout" | sort -nr
 stdout="$(echo -e "$stdout" | sort -nr | sed 's/^[0-9]\+ //')"
 if [ -z "$full_path" ]; then
     echo "$stdout" | sed "s@\(${ghq_roots//$'\n'/\\|}\)/@@"

@@ -14,7 +14,7 @@ else
   let s:ghq_command = "ghq"
 endif
 
-let s:ghq_list_command =  expand('<sfile>:p:h:h:h:h') . '/bin/ghq-list.sh'
+let s:ghq_list_command =  expand('<sfile>:p:h:h:h:h') . '/bin/ghq-list.sh -f'
 
 function! s:ghq_roots()
   return map(
